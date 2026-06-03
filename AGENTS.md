@@ -12,7 +12,33 @@
         - network/
         - data_state/
     - features/
-        - chat_room/
+        - chat/
+            - domain/
+                - entities/
+                - repositories/
+                - usercases/
+            - data/
+                - models/
+                - repositories/
+                - data_sources/
+            - presentation/
+                - pages/
+                - widgets/
+                - bloc/
+        - room/
+            - domain/
+                - entities/
+                - repositories/
+                - usercases/
+            - data/
+                - models/
+                - repositories/
+                - data_sources/
+            - presentation/
+                - pages/
+                - widgets/
+                - bloc/
+        - auth/
             - domain/
                 - entities/
                 - repositories/
@@ -37,3 +63,5 @@
 - Flutter
 - Dart
 - Bloc
+
+

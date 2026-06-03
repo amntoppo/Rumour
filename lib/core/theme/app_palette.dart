@@ -1,9 +1,48 @@
 import 'package:flutter/material.dart';
 
-/// Semantic colors exposed as a [ThemeExtension] — `context.palette.foo`.
+// ─── Raw colour tokens ─────────────────────────────────────────────────────────
+// Organised by hue family so it's trivial to swap a family without touching
+// the semantic layer below.
+
+abstract final class _Zinc {
+  static const c950 = Color(0xFF09090B);
+  static const c900 = Color(0xFF18181B);
+  static const c800 = Color(0xFF27272A);
+  static const c700 = Color(0xFF3F3F46);
+}
+
+abstract final class _Slate {
+  static const c50  = Color(0xFFF8FAFC);
+  static const c100 = Color(0xFFE5EAF1);
+  static const c200 = Color(0xFFE2E8F0);
+  static const c250 = Color(0xFFE8EEF5);
+  static const c300 = Color(0xFFCBD5E1);
+  static const c400 = Color(0xFF94A3B8);
+  static const c500 = Color(0xFF64748B);
+  static const c600 = Color(0xFF475569);
+  static const c900 = Color(0xFF0F172A);
+}
+
+abstract final class _Lime {
+  static const c400 = Color(0xFFA3E635);
+  static const c700 = Color(0xFF65A30D);
+}
+
+abstract final class _Amber {
+  static const c300 = Color(0xFFFDE047);
+  static const c500 = Color(0xFFF59E0B);
+}
+
+abstract final class _Mono {
+  static const white = Color(0xFFFFFFFF);
+  static const black = Color(0xFF000000);
+}
+
+// ─── Semantic palette ─────────────────────────────────────────────────────────
+
 @immutable
 class AppPalette extends ThemeExtension<AppPalette> {
-  const AppPalette({
+  const AppPalette._({
     required this.bgBase,
     required this.surfaceCard,
     required this.surfaceElevated,
@@ -26,48 +65,48 @@ class AppPalette extends ThemeExtension<AppPalette> {
   final Color divider;
   final Color accentPrimary;
   final Color onAccent;
-
-  // identity name gradient endpoints
   final Color identityGradientStart;
   final Color identityGradientEnd;
-
   final Color textPrimary;
   final Color textSecondary;
   final Color textMuted;
-
   final Color statusOnline;
 
-  static const AppPalette dark = AppPalette(
-    bgBase: Color(0xFF09090B),
-    surfaceCard: Color(0xFF18181B),
-    surfaceElevated: Color(0xFF27272A),
-    inputBg: Color(0xFF27272A),
-    divider: Color(0xFF3F3F46),
-    accentPrimary: Color(0xFFA3E635),
-    onAccent: Color(0xFF000000),
-    identityGradientStart: Color(0xFFFDE047),
-    identityGradientEnd: Color(0xFFA3E635),
-    textPrimary: Color(0xFFFFFFFF),
-    textSecondary: Color(0xFF9CA3AF),
-    textMuted: Color(0xFF6B7280),
-    statusOnline: Color(0xFFA3E635),
+  // ── Named instances ──────────────────────────────────────────────────────────
+
+  static const AppPalette dark = AppPalette._(
+    bgBase:                _Zinc.c950,
+    surfaceCard:           _Zinc.c900,
+    surfaceElevated:       _Zinc.c800,
+    inputBg:               _Zinc.c800,
+    divider:               _Zinc.c700,
+    accentPrimary:         _Lime.c400,
+    onAccent:              _Mono.black,
+    identityGradientStart: _Amber.c300,
+    identityGradientEnd:   _Lime.c400,
+    textPrimary:           _Mono.white,
+    textSecondary:         Color(0xFF9CA3AF),
+    textMuted:             Color(0xFF6B7280),
+    statusOnline:          _Lime.c400,
   );
 
-  static const AppPalette light = AppPalette(
-    bgBase: Color(0xFFF8FAFC),
-    surfaceCard: Color(0xFFE5EAF1),
-    surfaceElevated: Color(0xFFE2E8F0),
-    inputBg: Color(0xFFE8EEF5),
-    divider: Color(0xFFCBD5E1),
-    accentPrimary: Color(0xFF65A30D),
-    onAccent: Color(0xFFFFFFFF),
-    identityGradientStart: Color(0xFFF59E0B),
-    identityGradientEnd: Color(0xFF65A30D),
-    textPrimary: Color(0xFF0F172A),
-    textSecondary: Color(0xFF475569),
-    textMuted: Color(0xFF94A3B8),
-    statusOnline: Color(0xFF65A30D),
+  static const AppPalette light = AppPalette._(
+    bgBase:                _Slate.c50,
+    surfaceCard:           _Slate.c100,
+    surfaceElevated:       _Slate.c200,
+    inputBg:               _Slate.c250,
+    divider:               _Slate.c300,
+    accentPrimary:         _Lime.c700,
+    onAccent:              _Mono.white,
+    identityGradientStart: _Amber.c500,
+    identityGradientEnd:   _Lime.c700,
+    textPrimary:           _Slate.c900,
+    textSecondary:         _Slate.c600,
+    textMuted:             _Slate.c400,
+    statusOnline:          _Lime.c700,
   );
+
+  // ── ThemeExtension boilerplate ───────────────────────────────────────────────
 
   @override
   AppPalette copyWith({
@@ -84,50 +123,40 @@ class AppPalette extends ThemeExtension<AppPalette> {
     Color? textSecondary,
     Color? textMuted,
     Color? statusOnline,
-  }) {
-    return AppPalette(
-      bgBase: bgBase ?? this.bgBase,
-      surfaceCard: surfaceCard ?? this.surfaceCard,
-      surfaceElevated: surfaceElevated ?? this.surfaceElevated,
-      inputBg: inputBg ?? this.inputBg,
-      divider: divider ?? this.divider,
-      accentPrimary: accentPrimary ?? this.accentPrimary,
-      onAccent: onAccent ?? this.onAccent,
-      identityGradientStart:
-          identityGradientStart ?? this.identityGradientStart,
-      identityGradientEnd: identityGradientEnd ?? this.identityGradientEnd,
-      textPrimary: textPrimary ?? this.textPrimary,
-      textSecondary: textSecondary ?? this.textSecondary,
-      textMuted: textMuted ?? this.textMuted,
-      statusOnline: statusOnline ?? this.statusOnline,
-    );
-  }
+  }) => AppPalette._(
+    bgBase:                bgBase                ?? this.bgBase,
+    surfaceCard:           surfaceCard           ?? this.surfaceCard,
+    surfaceElevated:       surfaceElevated       ?? this.surfaceElevated,
+    inputBg:               inputBg               ?? this.inputBg,
+    divider:               divider               ?? this.divider,
+    accentPrimary:         accentPrimary         ?? this.accentPrimary,
+    onAccent:              onAccent              ?? this.onAccent,
+    identityGradientStart: identityGradientStart ?? this.identityGradientStart,
+    identityGradientEnd:   identityGradientEnd   ?? this.identityGradientEnd,
+    textPrimary:           textPrimary           ?? this.textPrimary,
+    textSecondary:         textSecondary         ?? this.textSecondary,
+    textMuted:             textMuted             ?? this.textMuted,
+    statusOnline:          statusOnline          ?? this.statusOnline,
+  );
 
   @override
   AppPalette lerp(ThemeExtension<AppPalette>? other, double t) {
     if (other is! AppPalette) return this;
-    return AppPalette(
-      bgBase: Color.lerp(bgBase, other.bgBase, t)!,
-      surfaceCard: Color.lerp(surfaceCard, other.surfaceCard, t)!,
-      surfaceElevated: Color.lerp(surfaceElevated, other.surfaceElevated, t)!,
-      inputBg: Color.lerp(inputBg, other.inputBg, t)!,
-      divider: Color.lerp(divider, other.divider, t)!,
-      accentPrimary: Color.lerp(accentPrimary, other.accentPrimary, t)!,
-      onAccent: Color.lerp(onAccent, other.onAccent, t)!,
-      identityGradientStart: Color.lerp(
-        identityGradientStart,
-        other.identityGradientStart,
-        t,
-      )!,
-      identityGradientEnd: Color.lerp(
-        identityGradientEnd,
-        other.identityGradientEnd,
-        t,
-      )!,
-      textPrimary: Color.lerp(textPrimary, other.textPrimary, t)!,
-      textSecondary: Color.lerp(textSecondary, other.textSecondary, t)!,
-      textMuted: Color.lerp(textMuted, other.textMuted, t)!,
-      statusOnline: Color.lerp(statusOnline, other.statusOnline, t)!,
+    Color c(Color a, Color b) => Color.lerp(a, b, t)!;
+    return AppPalette._(
+      bgBase:                c(bgBase,                other.bgBase),
+      surfaceCard:           c(surfaceCard,           other.surfaceCard),
+      surfaceElevated:       c(surfaceElevated,       other.surfaceElevated),
+      inputBg:               c(inputBg,               other.inputBg),
+      divider:               c(divider,               other.divider),
+      accentPrimary:         c(accentPrimary,         other.accentPrimary),
+      onAccent:              c(onAccent,              other.onAccent),
+      identityGradientStart: c(identityGradientStart, other.identityGradientStart),
+      identityGradientEnd:   c(identityGradientEnd,   other.identityGradientEnd),
+      textPrimary:           c(textPrimary,           other.textPrimary),
+      textSecondary:         c(textSecondary,         other.textSecondary),
+      textMuted:             c(textMuted,             other.textMuted),
+      statusOnline:          c(statusOnline,          other.statusOnline),
     );
   }
 }

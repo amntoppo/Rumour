@@ -28,14 +28,14 @@ class FirestoreRoomDataSource implements RoomRemoteDataSource {
 
   @override
   Future<RoomDto?> fetchRoom(String code) {
-    return _client.fetchOne(_path(code), RoomDto.fromMap);
+    return _client.get(_path(code), RoomDto.fromMap);
   }
 
   // ── Create ─────────────────────────────────────────────────────────────────
 
   @override
   Future<RoomDto> createRoom(String code, IdentityEntity identity) async {
-    final userUuid = await _localClient.fetchOne<String>(
+    final userUuid = await _localClient.get<String>(
       'user/uuid',
       (data) => data['uuid'] as String,
     );
@@ -53,14 +53,14 @@ class FirestoreRoomDataSource implements RoomRemoteDataSource {
     );
 
     // save() writes at the document path so the room code IS the document id
-    await _client.save(
+    await _client.put(
       _path(code),
       dto,
       (d) => d.toMap(_client.timestampSentinel),
     );
 
     // Save identity data in the Room database
-    await _client.save(
+    await _client.put(
       'rooms/$code/identities/$userUuid',
       identity,
       (i) => <String, dynamic>{
@@ -73,7 +73,7 @@ class FirestoreRoomDataSource implements RoomRemoteDataSource {
     );
 
     // Re-fetch so the returned DTO reflects the server-stamped createdAt
-    final saved = await _client.fetchOne(_path(code), RoomDto.fromMap);
+    final saved = await _client.get(_path(code), RoomDto.fromMap);
     return saved ?? dto;
   }
 
@@ -81,7 +81,7 @@ class FirestoreRoomDataSource implements RoomRemoteDataSource {
 
   @override
   Future<RoomDto> joinRoom(String code, IdentityEntity identity) async {
-    final userUuid = await _localClient.fetchOne<String>(
+    final userUuid = await _localClient.get<String>(
       'user/uuid',
       (data) => data['uuid'] as String,
     );
@@ -90,7 +90,7 @@ class FirestoreRoomDataSource implements RoomRemoteDataSource {
       throw const FirestoreOperationException('User UUID not found in local storage.', code: 'local-uuid-missing');
     }
 
-    final existingIdentity = await _client.fetchOne(
+    final existingIdentity = await _client.get(
       'rooms/$code/identities/$userUuid',
       (data) => data,
     );
@@ -112,7 +112,7 @@ class FirestoreRoomDataSource implements RoomRemoteDataSource {
       );
     }
 
-    final saved = await _client.fetchOne(_path(code), RoomDto.fromMap);
+    final saved = await _client.get(_path(code), RoomDto.fromMap);
     if (saved == null) {
       throw DocumentNotFoundException('Room not found after joining: $code');
     }

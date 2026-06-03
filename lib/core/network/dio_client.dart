@@ -5,12 +5,12 @@ import 'package:rumour_app/core/network/remote_client.dart';
 
 /// Dio-based implementation of [RemoteClient].
 ///
-/// Maps HTTP verbs to the [RemoteClient] contract:
-/// - [fetchOne]  → GET   (returns null on 404)
-/// - [save]      → PUT   (full replace)
-/// - [create]    → POST  (expects `{"id": "..."}` in response)
-/// - [patch]     → PATCH (partial update)
-/// - [remove]    → DELETE
+/// Maps HTTP verbs directly to the [RemoteClient] contract:
+/// - [get]    → GET   (returns null on 404)
+/// - [post]   → POST  (expects `{"id": "..."}` in response)
+/// - [put]    → PUT   (full replace)
+/// - [patch]  → PATCH (partial update)
+/// - [delete] → DELETE
 ///
 /// All [DioException]s are converted into typed [AppException] subtypes
 /// via [_mapError] so callers never need to import Dio.
@@ -48,18 +48,13 @@ class DioClient implements RemoteClient {
   // ── RemoteClient ──────────────────────────────────────────────────────────
 
   @override
-  Future<T?> fetchOne<T>(String path, FromMap<T> fromMap) async {
+  Future<T?> get<T>(String path, FromMap<T> fromMap) async {
     final data = await _request('GET', path);
     return data == null ? null : fromMap(data);
   }
 
   @override
-  Future<void> save<T>(String path, T value, ToMap<T> toMap) async {
-    await _request('PUT', path, body: toMap(value));
-  }
-
-  @override
-  Future<String> create<T>(
+  Future<String> post<T>(
     String collectionPath,
     T value,
     ToMap<T> toMap,
@@ -73,12 +68,17 @@ class DioClient implements RemoteClient {
   }
 
   @override
+  Future<void> put<T>(String path, T value, ToMap<T> toMap) async {
+    await _request('PUT', path, body: toMap(value));
+  }
+
+  @override
   Future<void> patch<T>(String path, T value, ToMap<T> toMap) async {
     await _request('PATCH', path, body: toMap(value));
   }
 
   @override
-  Future<void> remove(String path) async {
+  Future<void> delete(String path) async {
     await _request('DELETE', path);
   }
 

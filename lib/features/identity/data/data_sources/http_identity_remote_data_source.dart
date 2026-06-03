@@ -10,7 +10,7 @@ class HttpIdentityRemoteDataSource implements IdentityRemoteDataSource {
 
   @override
   Future<IdentityModel> fetchRandomIdentity(String roomId) async {
-    final response = await _client.fetchOne<IdentityModel>(
+    final response = await _client.get<IdentityModel>(
       '/',
       (data) {
         final results = data['results'] as List?;

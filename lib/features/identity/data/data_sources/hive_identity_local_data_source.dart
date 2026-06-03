@@ -11,11 +11,11 @@ class HiveIdentityLocalDataSource implements IdentityLocalDataSource {
 
   @override
   Future<IdentityModel?> getIdentity(String roomId) {
-    return _localClient.fetchOne(_path(roomId), IdentityModel.fromCache);
+    return _localClient.get(_path(roomId), IdentityModel.fromCache);
   }
 
   @override
   Future<void> saveIdentity(String roomId, IdentityModel identity) {
-    return _localClient.save(_path(roomId), identity, (m) => m.toCacheJson());
+    return _localClient.put(_path(roomId), identity, (m) => m.toCacheJson());
   }
 }

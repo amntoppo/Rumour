@@ -47,7 +47,7 @@ class FirestoreChatRemoteDataSource implements ChatRemoteDataSource {
     required String roomCode,
     required MessageModel message,
   }) async {
-    return _client.create(
+    return _client.post(
       _path(roomCode),
       message,
       (m) => m.toFirestore(_client.timestampSentinel),

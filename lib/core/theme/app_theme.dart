@@ -4,78 +4,67 @@ import 'package:flutter/services.dart';
 import 'app_palette.dart';
 import 'app_typography.dart';
 
-class AppTheme {
-  AppTheme._();
+abstract final class AppTheme {
+  static ThemeData get dark  => _build(AppPalette.dark,  AppTypography.dark,  Brightness.dark);
+  static ThemeData get light => _build(AppPalette.light, AppTypography.light, Brightness.light);
 
-  static ThemeData get dark => _build(
-        palette: AppPalette.dark,
-        typography: AppTypography.dark,
-        brightness: Brightness.dark,
-        statusBarIcons: Brightness.light,
-      );
+  static ThemeData _build(
+    AppPalette palette,
+    AppTypography typography,
+    Brightness brightness,
+  ) => ThemeData(
+    useMaterial3: true,
+    brightness: brightness,
+    colorScheme: _colorScheme(palette, brightness),
+    scaffoldBackgroundColor: palette.bgBase,
+    dividerColor: palette.divider,
+    appBarTheme: _appBarTheme(palette, typography, brightness),
+    filledButtonTheme: _filledButtonTheme(palette, typography),
+    extensions: <ThemeExtension<dynamic>>[palette, typography],
+  );
 
-  static ThemeData get light => _build(
-        palette: AppPalette.light,
-        typography: AppTypography.light,
-        brightness: Brightness.light,
-        statusBarIcons: Brightness.dark,
-      );
+  // ── Sub-builders ────────────────────────────────────────────────────────────
 
-  static ThemeData _build({
-    required AppPalette palette,
-    required AppTypography typography,
-    required Brightness brightness,
-    required Brightness statusBarIcons,
-  }) {
-    final base = brightness == Brightness.dark
-        ? ColorScheme.dark(
-            surface: palette.bgBase,
-            primary: palette.accentPrimary,
-            onPrimary: palette.onAccent,
-            secondary: palette.accentPrimary,
-            onSecondary: palette.onAccent,
-            onSurface: palette.textPrimary,
-          )
-        : ColorScheme.light(
-            surface: palette.bgBase,
-            primary: palette.accentPrimary,
-            onPrimary: palette.onAccent,
-            secondary: palette.accentPrimary,
-            onSecondary: palette.onAccent,
-            onSurface: palette.textPrimary,
-          );
-
-    return ThemeData(
-      useMaterial3: true,
-      brightness: brightness,
-      colorScheme: base,
-      scaffoldBackgroundColor: palette.bgBase,
-      dividerColor: palette.divider,
-      appBarTheme: AppBarTheme(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        centerTitle: true,
-        titleTextStyle: typography.appBarTitle,
-        iconTheme: IconThemeData(color: palette.textPrimary),
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: statusBarIcons,
-          statusBarBrightness: brightness,
-        ),
-      ),
-      filledButtonTheme: FilledButtonThemeData(
-        style: FilledButton.styleFrom(
-          backgroundColor: palette.accentPrimary,
-          foregroundColor: palette.onAccent,
-          textStyle: typography.buttonLabel,
-          minimumSize: const Size.fromHeight(56),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-      ),
-      extensions: <ThemeExtension<dynamic>>[palette, typography],
+  static ColorScheme _colorScheme(AppPalette p, Brightness b) {
+    final factory = b == Brightness.dark ? ColorScheme.dark : ColorScheme.light;
+    return factory(
+      surface:     p.bgBase,
+      primary:     p.accentPrimary,
+      onPrimary:   p.onAccent,
+      secondary:   p.accentPrimary,
+      onSecondary: p.onAccent,
+      onSurface:   p.textPrimary,
     );
   }
+
+  static AppBarTheme _appBarTheme(
+    AppPalette p,
+    AppTypography t,
+    Brightness b,
+  ) => AppBarTheme(
+    elevation: 0,
+    backgroundColor: Colors.transparent,
+    surfaceTintColor: Colors.transparent,
+    centerTitle: true,
+    titleTextStyle: t.appBarTitle,
+    iconTheme: IconThemeData(color: p.textPrimary),
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: b == Brightness.dark ? Brightness.light : Brightness.dark,
+      statusBarBrightness: b,
+    ),
+  );
+
+  static FilledButtonThemeData _filledButtonTheme(
+    AppPalette p,
+    AppTypography t,
+  ) => FilledButtonThemeData(
+    style: FilledButton.styleFrom(
+      backgroundColor: p.accentPrimary,
+      foregroundColor: p.onAccent,
+      textStyle: t.buttonLabel,
+      minimumSize: const Size.fromHeight(56),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    ),
+  );
 }

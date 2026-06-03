@@ -100,12 +100,12 @@ Future<void> initDependencies() async {
 }
 
 Future<void> _ensureUserUuid(LocalClient localClient) async {
-  final uuid = await localClient.fetchOne<String>(
+  final uuid = await localClient.get<String>(
     'user/uuid',
     (data) => data['uuid'] as String,
   );
   if (uuid == null) {
     final newUuid = const Uuid().v4();
-    await localClient.save('user/uuid', newUuid, (id) => {'uuid': id});
+    await localClient.put('user/uuid', newUuid, (id) => {'uuid': id});
   }
 }

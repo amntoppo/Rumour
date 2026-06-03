@@ -42,22 +42,22 @@ class FirebaseFirestoreClient implements FirestoreClient {
   // ── CRUD ──────────────────────────────────────────────────────────────────
 
   @override
-  Future<T?> fetchOne<T>(String path, FromMap<T> fromMap) async {
+  Future<T?> get<T>(String path, FromMap<T> fromMap) async {
     try {
       final snap = await _db.doc(path).get();
       if (!snap.exists) return null;
       return fromMap(_normalise(snap.id, snap.data(), snap.metadata));
     } on FirebaseException catch (e) {
-      throw _wrap(e, 'fetchOne');
+      throw _wrap(e, 'get');
     }
   }
 
   @override
-  Future<void> save<T>(String path, T value, ToMap<T> toMap) async {
+  Future<void> put<T>(String path, T value, ToMap<T> toMap) async {
     try {
       await _db.doc(path).set(toMap(value));
     } on FirebaseException catch (e) {
-      throw _wrap(e, 'save');
+      throw _wrap(e, 'put');
     }
   }
 
@@ -71,7 +71,7 @@ class FirebaseFirestoreClient implements FirestoreClient {
   }
 
   @override
-  Future<String> create<T>(
+  Future<String> post<T>(
     String collectionPath,
     T value,
     ToMap<T> toMap,
@@ -80,7 +80,7 @@ class FirebaseFirestoreClient implements FirestoreClient {
       final ref = await _db.collection(collectionPath).add(toMap(value));
       return ref.id;
     } on FirebaseException catch (e) {
-      throw _wrap(e, 'create');
+      throw _wrap(e, 'post');
     }
   }
 
@@ -96,11 +96,11 @@ class FirebaseFirestoreClient implements FirestoreClient {
   }
 
   @override
-  Future<void> remove(String path) async {
+  Future<void> delete(String path) async {
     try {
       await _db.doc(path).delete();
     } on FirebaseException catch (e) {
-      throw _wrap(e, 'remove');
+      throw _wrap(e, 'delete');
     }
   }
 

@@ -11,7 +11,7 @@ class HiveChatLocalDataSource implements ChatLocalDataSource {
 
   @override
   Future<List<MessageModel>> getCachedMessages(String roomCode) async {
-    final data = await _localClient.fetchOne(_path(roomCode), (map) => map);
+    final data = await _localClient.get(_path(roomCode), (map) => map);
     if (data == null) return const [];
     final rawList = data['messages'] as List<dynamic>? ?? const [];
     return rawList
@@ -25,7 +25,7 @@ class HiveChatLocalDataSource implements ChatLocalDataSource {
     String roomCode,
     List<MessageModel> messages,
   ) async {
-    await _localClient.save(
+    await _localClient.put(
       _path(roomCode),
       messages,
       (list) => <String, dynamic>{

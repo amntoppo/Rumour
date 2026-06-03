@@ -51,7 +51,7 @@ class HiveDataSource implements LocalClient {
   }
 
   @override
-  Future<T?> fetchOne<T>(String path, FromMap<T> fromMap) async {
+  Future<T?> get<T>(String path, FromMap<T> fromMap) async {
     final (boxName, key) = _parsePath(path);
     final box = await _getBox(boxName);
     final rawData = box.get(key);
@@ -68,14 +68,14 @@ class HiveDataSource implements LocalClient {
   }
 
   @override
-  Future<void> save<T>(String path, T value, ToMap<T> toMap) async {
+  Future<void> put<T>(String path, T value, ToMap<T> toMap) async {
     final (boxName, key) = _parsePath(path);
     final box = await _getBox(boxName);
     await box.put(key, toMap(value));
   }
 
   @override
-  Future<String> create<T>(
+  Future<String> post<T>(
     String collectionPath,
     T value,
     ToMap<T> toMap,
@@ -103,7 +103,7 @@ class HiveDataSource implements LocalClient {
   }
 
   @override
-  Future<void> remove(String path) async {
+  Future<void> delete(String path) async {
     final (boxName, key) = _parsePath(path);
     final box = await _getBox(boxName);
     await box.delete(key);

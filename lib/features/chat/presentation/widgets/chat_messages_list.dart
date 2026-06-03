@@ -9,6 +9,7 @@ import 'package:rumour_app/features/chat/presentation/bloc/chat_state.dart';
 import 'package:rumour_app/features/chat/presentation/widgets/chat_empty_state.dart';
 import 'package:rumour_app/features/chat/presentation/widgets/date_separator.dart';
 import 'package:rumour_app/features/chat/presentation/widgets/message_row.dart';
+import 'package:rumour_app/shared/widgets/app_loading_indicator.dart';
 
 class ChatMessagesList extends StatelessWidget {
   const ChatMessagesList({super.key, required this.roomCode});
@@ -17,15 +18,12 @@ class ChatMessagesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
     return BlocBuilder<ChatBloc, ChatState>(
       builder: (context, state) {
         if (state is ChatInitial ||
             (state is ChatLoading && state.messages.isEmpty)) {
-          return Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(palette.accentPrimary),
-            ),
+          return const Center(
+            child: AppLoadingIndicator(),
           );
         }
 
@@ -83,17 +81,10 @@ class ChatMessagesList extends StatelessWidget {
               });
             }
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
               child: Center(
-                child: SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation(palette.accentPrimary),
-                  ),
-                ),
+                child: AppLoadingIndicator(dotSize: 7),
               ),
             );
           },

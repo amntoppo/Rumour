@@ -2,6 +2,11 @@
 
 A Flutter app that lets users join a room by code and chat anonymously. Every session generates a random identity (name + avatar) via [randomuser.me](https://randomuser.me), so no sign-up or personal data is required.
 
+## Demo & Downloads
+
+- **Video Demonstration**: [Watch Video on Google Drive](https://drive.google.com/file/d/19rOhNIQYIKezc0abtok_65ATSv4sGerF/view?usp=drive_link)
+- **APK Download**: [Download Android APK from Google Drive](https://drive.google.com/file/d/1DNXL77Brr1-_Wg_HygEIkUQ38CqDt_ac/view?usp=sharing)
+
 ---
 
 ## Features

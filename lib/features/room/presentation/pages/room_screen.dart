@@ -54,7 +54,7 @@ class _JoinRoomView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 48),
-                  // Key icon
+                  // Key icon container (flat circle with keyIconBg color, no border, no glow)
                   Center(
                     child: Container(
                       decoration: BoxDecoration(
@@ -79,24 +79,20 @@ class _JoinRoomView extends StatelessWidget {
                   const Spacer(flex: 3),
                   // Title
                   Text(
-                    'Join a Room',
+                    'Join A Room',
                     textAlign: TextAlign.center,
                     style: typography.screenTitle,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
                   // Subtitle
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Text(
-                      'Enter the 6-digit room code\nshared with you',
-                      textAlign: TextAlign.center,
-                      style: typography.screenSubtitle,
-                    ),
+                  Text(
+                    'Enter the code to join the anon chat\nroom',
+                    textAlign: TextAlign.center,
+                    style: typography.screenSubtitle,
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 48),
                   // 6-digit code input
                   const RoomCodeInput(enabled: true),
-                  const SizedBox(height: 20),
                   const Spacer(flex: 5),
                 ],
               ),

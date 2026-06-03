@@ -16,6 +16,11 @@ class IdentityRepositoryImpl implements IdentityRepository {
   final IdentityRemoteDataSource remote;
 
   @override
+  Future<IdentityEntity?> getCachedIdentity(String roomId) async {
+    return await local.getIdentity(roomId);
+  }
+
+  @override
   Future<DataState<IdentityEntity>> getOrFetchIdentity(String roomId) async {
     try {
       // 1. Try to read from local cache

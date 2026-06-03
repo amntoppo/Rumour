@@ -8,4 +8,8 @@ abstract class IdentityRepository {
   /// it returns the cached identity. Otherwise, it fetches a new random
   /// identity from the API, caches it locally, and returns it.
   Future<DataState<IdentityEntity>> getOrFetchIdentity(String roomId);
+
+  /// Retrieves the identity for the given [roomId] only if it is cached locally.
+  /// Otherwise, returns `null`.
+  Future<IdentityEntity?> getCachedIdentity(String roomId);
 }

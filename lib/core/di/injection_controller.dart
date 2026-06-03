@@ -75,7 +75,7 @@ Future<void> initDependencies() async {
     ),
   );
   sl.registerLazySingleton(() => GetIdentityUseCase(sl()));
-  sl.registerFactory(() => IdentityBloc(sl()));
+  sl.registerFactory(() => IdentityBloc(sl(), sl()));
 
   // ── Chat feature ───────────────────────────────────────────────────────────
   sl.registerLazySingleton<ChatLocalDataSource>(

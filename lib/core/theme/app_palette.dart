@@ -56,6 +56,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.textSecondary,
     required this.textMuted,
     required this.statusOnline,
+    required this.keyIconBg,
   });
 
   final Color bgBase;
@@ -71,6 +72,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
   final Color textSecondary;
   final Color textMuted;
   final Color statusOnline;
+  final Color keyIconBg;
 
   // ── Named instances ──────────────────────────────────────────────────────────
 
@@ -88,6 +90,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     textSecondary:         Color(0xFF9CA3AF),
     textMuted:             Color(0xFF6B7280),
     statusOnline:          _Lime.c400,
+    keyIconBg:             _Zinc.c800,
   );
 
   static const AppPalette light = AppPalette._(
@@ -104,6 +107,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     textSecondary:         _Slate.c600,
     textMuted:             _Slate.c400,
     statusOnline:          _Lime.c700,
+    keyIconBg:             Color(0x80E2E8F0),
   );
 
   // ── ThemeExtension boilerplate ───────────────────────────────────────────────
@@ -123,6 +127,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     Color? textSecondary,
     Color? textMuted,
     Color? statusOnline,
+    Color? keyIconBg,
   }) => AppPalette._(
     bgBase:                bgBase                ?? this.bgBase,
     surfaceCard:           surfaceCard           ?? this.surfaceCard,
@@ -137,6 +142,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     textSecondary:         textSecondary         ?? this.textSecondary,
     textMuted:             textMuted             ?? this.textMuted,
     statusOnline:          statusOnline          ?? this.statusOnline,
+    keyIconBg:             keyIconBg             ?? this.keyIconBg,
   );
 
   @override
@@ -157,6 +163,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
       textSecondary:         c(textSecondary,         other.textSecondary),
       textMuted:             c(textMuted,             other.textMuted),
       statusOnline:          c(statusOnline,          other.statusOnline),
+      keyIconBg:             c(keyIconBg,             other.keyIconBg),
     );
   }
 }

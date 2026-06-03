@@ -62,7 +62,6 @@ lib/
 │       └── use_case.dart        # Base UseCase<Output, Input> abstract class
 │
 ├── features/
-│   ├── auth/              # (placeholder)
 │   │
 │   ├── identity/          # Random identity generation & caching
 │   │   ├── domain/

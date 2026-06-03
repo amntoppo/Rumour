@@ -12,4 +12,8 @@ class GetIdentityUseCase extends UseCase<DataState<IdentityEntity>, String> {
   Future<DataState<IdentityEntity>> call(String params) {
     return _repository.getOrFetchIdentity(params);
   }
+
+  Future<IdentityEntity?> getCached(String roomId) {
+    return _repository.getCachedIdentity(roomId);
+  }
 }

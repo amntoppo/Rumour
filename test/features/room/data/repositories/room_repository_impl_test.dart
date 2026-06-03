@@ -51,6 +51,11 @@ class FakeRoomRemoteDataSource implements RoomRemoteDataSource {
 
 class FakeIdentityRepository implements IdentityRepository {
   @override
+  Future<IdentityEntity?> getCachedIdentity(String roomId) async {
+    return null;
+  }
+
+  @override
   Future<DataState<IdentityEntity>> getOrFetchIdentity(String roomId) async {
     return DataSuccess(IdentityEntity(
       id: 'identity_id_123',

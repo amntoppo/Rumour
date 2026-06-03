@@ -83,11 +83,11 @@ void main() {
       dataSource = HiveDataSource(hive: fakeHive);
     });
 
-    test('save and fetchOne works correctly', () async {
+    test('put and get works correctly', () async {
       final data = {'name': 'John', 'age': 30};
-      await dataSource.save('users/user_1', data, (val) => val);
+      await dataSource.put('users/user_1', data, (val) => val);
 
-      final fetched = await dataSource.fetchOne<Map<String, dynamic>>(
+      final fetched = await dataSource.get<Map<String, dynamic>>(
         'users/user_1',
         (map) => map,
       );
@@ -98,13 +98,21 @@ void main() {
       expect(fetched['_id'], 'user_1');
     });
 
-    test('create generates a uuid and saves document', () async {
+    test('get returns null when document does not exist', () async {
+      final fetched = await dataSource.get<Map<String, dynamic>>(
+        'users/nonexistent',
+        (map) => map,
+      );
+      expect(fetched, isNull);
+    });
+
+    test('post generates a uuid and saves document', () async {
       final data = {'name': 'Alice'};
-      final id = await dataSource.create('users', data, (val) => val);
+      final id = await dataSource.post('users', data, (val) => val);
 
       expect(id, isNotEmpty);
 
-      final fetched = await dataSource.fetchOne<Map<String, dynamic>>(
+      final fetched = await dataSource.get<Map<String, dynamic>>(
         'users/$id',
         (map) => map,
       );
@@ -114,34 +122,58 @@ void main() {
       expect(fetched['_id'], id);
     });
 
-    test('patch performs partial updates', () async {
+    test('patch performs partial updates without overwriting unrelated fields', () async {
       final initialData = {'name': 'Bob', 'role': 'user'};
-      await dataSource.save('users/user_2', initialData, (val) => val);
+      await dataSource.put('users/user_2', initialData, (val) => val);
 
       final update = {'role': 'admin'};
       await dataSource.patch('users/user_2', update, (val) => val);
 
-      final fetched = await dataSource.fetchOne<Map<String, dynamic>>(
+      final fetched = await dataSource.get<Map<String, dynamic>>(
         'users/user_2',
         (map) => map,
       );
 
       expect(fetched, isNotNull);
-      expect(fetched!['name'], 'Bob');
-      expect(fetched['role'], 'admin');
+      expect(fetched!['name'], 'Bob');   // untouched
+      expect(fetched['role'], 'admin');  // updated
     });
 
-    test('remove deletes document', () async {
-      await dataSource.save('users/user_3', {'name': 'Charlie'}, (val) => val);
+    test('delete removes the document', () async {
+      await dataSource.put('users/user_3', {'name': 'Charlie'}, (val) => val);
 
-      await dataSource.remove('users/user_3');
+      await dataSource.delete('users/user_3');
 
-      final fetched = await dataSource.fetchOne<Map<String, dynamic>>(
+      final fetched = await dataSource.get<Map<String, dynamic>>(
         'users/user_3',
         (map) => map,
       );
 
       expect(fetched, isNull);
+    });
+
+    test('path with multiple segments is parsed correctly', () async {
+      await dataSource.put(
+        'rooms/room_1/messages/msg_1',
+        {'text': 'hello'},
+        (val) => val,
+      );
+
+      final fetched = await dataSource.get<Map<String, dynamic>>(
+        'rooms/room_1/messages/msg_1',
+        (map) => map,
+      );
+
+      expect(fetched, isNotNull);
+      expect(fetched!['text'], 'hello');
+      expect(fetched['_id'], 'room_1/messages/msg_1');
+    });
+
+    test('parsePath throws on single-segment path', () {
+      expect(
+        () async => dataSource.get<dynamic>('onlyone', (m) => m),
+        throwsArgumentError,
+      );
     });
   });
 }

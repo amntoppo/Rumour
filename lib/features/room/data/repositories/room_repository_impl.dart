@@ -17,8 +17,8 @@ class RoomRepositoryImpl implements RoomRepository {
     try {
       // 1. Create or fetch anonymous identity for this room
       final identityRes = await _identityRepository.getOrFetchIdentity(code);
-      if (identityRes is DataFailure) {
-        return DataFailure(identityRes.error!);
+      if (identityRes is DataFailure<IdentityEntity>) {
+        return DataFailure(identityRes.error);
       }
       final identity = (identityRes as DataSuccess<IdentityEntity>).data;
 

@@ -44,17 +44,18 @@ class FakeHive implements HiveInterface {
   Box<T> box<T>(String name) => _boxes[name]! as Box<T>;
 
   @override
-  Future<Box<T>> openBox<T>(
+  Future<Box<E>> openBox<E>(
     String name, {
-    HiveCipher? encryptionCipher,
-    HiveKeyComparator keyComparator = defaultKeyComparator,
-    HiveCompactor compactor = defaultCompactor,
+    Uint8List? bytes,
+    String? collection,
+    bool Function(int, int)? compactionStrategy,
     bool crashRecovery = true,
-    String? path,
-    Uint8List? key,
+    HiveCipher? encryptionCipher,
     List<int>? encryptionKey,
+    int Function(dynamic, dynamic)? keyComparator,
+    String? path,
   }) async {
-    return _boxes.putIfAbsent(name, () => FakeBox()) as Box<T>;
+    return _boxes.putIfAbsent(name, () => FakeBox()) as Box<E>;
   }
 
   @override

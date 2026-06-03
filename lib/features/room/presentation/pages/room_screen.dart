@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rumour_app/core/constants/app_assets.dart';
 import 'package:rumour_app/core/di/injection_controller.dart';
+import 'package:rumour_app/core/extensions/context_extensions.dart';
 import 'package:rumour_app/core/routes/route_name.dart';
 import 'package:rumour_app/features/room/presentation/bloc/join_room_bloc.dart';
 import 'package:rumour_app/features/room/presentation/bloc/join_room_event.dart';
@@ -36,17 +37,12 @@ class _JoinRoomView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.palette;
+    final typography = context.typography;
     return Scaffold(
-      backgroundColor: const Color(0xFF0B0F19),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: RadialGradient(
-            center: Alignment.topCenter,
-            radius: 1.5,
-            colors: [Color(0xFF1E293B), Color(0xFF0F172A), Color(0xFF020617)],
-            stops: [0.0, 0.4, 1.0],
-          ),
-        ),
+      backgroundColor: palette.bgBase,
+      body: ColoredBox(
+        color: palette.bgBase,
         child: SafeArea(
           child: MultiBlocListener(
             listeners: [
@@ -74,7 +70,7 @@ class _JoinRoomView extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(state.message),
-                        backgroundColor: Colors.redAccent,
+                        backgroundColor: Theme.of(context).colorScheme.error,
                         behavior: SnackBarBehavior.floating,
                       ),
                     );
@@ -106,8 +102,8 @@ class _JoinRoomView extends StatelessWidget {
                               width: 56,
                               height: 28,
                               fit: BoxFit.contain,
-                              colorFilter: const ColorFilter.mode(
-                                Color(0xFFA3E635),
+                              colorFilter: ColorFilter.mode(
+                                palette.accentPrimary,
                                 BlendMode.srcIn,
                               ),
                             ),
@@ -116,15 +112,10 @@ class _JoinRoomView extends StatelessWidget {
                       ),
                       const Spacer(flex: 3),
                       // Title
-                      const Text(
+                      Text(
                         'Join a Room',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1.0,
-                          color: Colors.white,
-                        ),
+                        style: typography.screenTitle,
                       ),
                       const SizedBox(height: 12),
                       // Subtitle
@@ -133,13 +124,7 @@ class _JoinRoomView extends StatelessWidget {
                         child: Text(
                           'Enter the 6-digit room code\nshared with you',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            height: 1.6,
-                            letterSpacing: 0.5,
-                            color: Colors.white.withValues(alpha: 0.5),
-                          ),
+                          style: typography.screenSubtitle,
                         ),
                       ),
                       const SizedBox(height: 40),
@@ -170,17 +155,18 @@ class _GlowContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.palette;
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: const Color(0xFF1E293B).withValues(alpha: 0.5),
+        color: palette.surfaceElevated.withValues(alpha: 0.5),
         border: Border.all(
-          color: const Color(0xFFA3E635).withValues(alpha: 0.25),
+          color: palette.accentPrimary.withValues(alpha: 0.25),
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFA3E635).withValues(alpha: 0.15),
+            color: palette.accentPrimary.withValues(alpha: 0.15),
             blurRadius: 30,
             spreadRadius: 4,
           ),
@@ -200,10 +186,11 @@ class _CheckingSpinner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.palette;
     return AnimatedOpacity(
       opacity: visible ? 1.0 : 0.0,
       duration: const Duration(milliseconds: 180),
-      child: const SizedBox(
+      child: SizedBox(
         height: 24,
         child: Center(
           child: SizedBox(
@@ -211,7 +198,7 @@ class _CheckingSpinner extends StatelessWidget {
             height: 20,
             child: CircularProgressIndicator(
               strokeWidth: 2,
-              valueColor: AlwaysStoppedAnimation(Color(0xFFA3E635)),
+              valueColor: AlwaysStoppedAnimation(palette.accentPrimary),
             ),
           ),
         ),

@@ -12,7 +12,8 @@ class Routes {
       case RouteName.roomScreen:
         return MaterialPageRoute(builder: (_) => RoomScreen());
       case RouteName.chatScreen:
-        return MaterialPageRoute(builder: (_) => ChatScreen());
+        final roomCode = settings.arguments as String;
+        return MaterialPageRoute(builder: (_) => ChatScreen(roomCode: roomCode));
 
       default:
         return MaterialPageRoute(builder: (_) => const SplashScreen());

@@ -41,7 +41,7 @@ class FirestoreRoomDataSource implements RoomRemoteDataSource {
     );
 
     if (userUuid == null) {
-      throw const FirestoreOperationException('User UUID not found in local storage.');
+      throw const FirestoreOperationException('User UUID not found in local storage.', code: 'local-uuid-missing');
     }
 
     final dto = RoomDto(
@@ -87,7 +87,7 @@ class FirestoreRoomDataSource implements RoomRemoteDataSource {
     );
 
     if (userUuid == null) {
-      throw const FirestoreOperationException('User UUID not found in local storage.');
+      throw const FirestoreOperationException('User UUID not found in local storage.', code: 'local-uuid-missing');
     }
 
     final existingIdentity = await _client.fetchOne(

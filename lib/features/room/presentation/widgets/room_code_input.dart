@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rumour_app/core/extensions/context_extensions.dart';
 import 'package:rumour_app/features/room/presentation/bloc/room_code_form_bloc.dart';
 import 'package:rumour_app/features/room/presentation/bloc/room_code_form_event.dart';
 import 'package:rumour_app/features/room/presentation/bloc/room_code_form_state.dart';
@@ -72,7 +73,7 @@ class _RoomCodeInputState extends State<RoomCodeInput> {
         // Reset the hidden controller when the bloc is cleared externally
         listenWhen: (prev, curr) =>
             prev.digits.isNotEmpty && curr.digits.isEmpty,
-        listener: (_, _) => _resetController(),
+        listener: (_, __) => _resetController(),
         child: BlocBuilder<RoomCodeFormBloc, RoomCodeFormState>(
           builder: (context, state) {
             return Stack(
@@ -121,8 +122,8 @@ class _DigitCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final accentColor = const Color(0xFFA3E635);
+    final palette = context.palette;
+    final accentColor = palette.accentPrimary;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
@@ -130,14 +131,14 @@ class _DigitCell extends StatelessWidget {
       height: 56,
       margin: const EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E293B),
+        color: palette.surfaceElevated,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: isActive
               ? accentColor
               : digit != null
                   ? accentColor.withValues(alpha: 0.5)
-                  : const Color(0xFF334155),
+                  : palette.divider,
           width: isActive ? 2 : 1.5,
         ),
         boxShadow: isActive
@@ -154,8 +155,8 @@ class _DigitCell extends StatelessWidget {
       child: digit != null
           ? Text(
               digit!,
-              style: theme.textTheme.headlineSmall?.copyWith(
-                color: Colors.white,
+              style: context.typography.inputText.copyWith(
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 2,
               ),

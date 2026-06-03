@@ -33,7 +33,7 @@ class IdentityErrorView extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             const Text(
-              'Failed to generate identity',
+              'Failed to create a new chat',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,
@@ -43,7 +43,7 @@ class IdentityErrorView extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              message.isNotEmpty ? message : 'An unexpected error occurred.',
+              'Make sure you are connected to the internet',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white.withValues(alpha: 0.5),

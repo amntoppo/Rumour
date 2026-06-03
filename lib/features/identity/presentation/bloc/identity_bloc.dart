@@ -21,6 +21,10 @@ class IdentityBloc extends Bloc<IdentityEvent, IdentityState> {
     LoadIdentity event,
     Emitter<IdentityState> emit,
   ) async {
+    if (state is IdentityLoading || state is IdentitySuccess) {
+      return;
+    }
+
     // 1. Check if identity is cached locally
     final cached = await _getIdentityUseCase.getCached(event.roomCode);
     if (cached != null) {
